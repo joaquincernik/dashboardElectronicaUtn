@@ -21,7 +21,6 @@ class Componente extends Model
     // protected $primaryKey = 'id';
      public $timestamps = false;
     protected $guarded = ['id'];
-    // protected $fillable = [];
     // protected $hidden = [];
 
     /*
@@ -30,6 +29,10 @@ class Componente extends Model
     |--------------------------------------------------------------------------
     */
 
+    public function getModeloCompletoAttribute()
+    {
+        return $this->modelo . ', ' . $this->nombre; 
+    }
     /*
     |--------------------------------------------------------------------------
     | RELATIONS

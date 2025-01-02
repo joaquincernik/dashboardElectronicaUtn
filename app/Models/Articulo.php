@@ -37,6 +37,9 @@ class Articulo extends Model
     
     */
   
+    public function user(){
+        return $this->belongsTo(Inventario::class);
+    }
     /*
     |--------------------------------------------------------------------------
     | SCOPES

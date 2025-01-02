@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Backpack\CRUD\app\Library\Widget;
+
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 
@@ -54,7 +56,41 @@ class InventarioCrudController extends CrudController
      */
     protected function setupCreateOperation()
     {
-        CRUD::setFromDb(); // set fields from db columns.
+        CRUD::addFields([
+            [
+                'name'      => 'componente',
+                'label'     => 'Active el boton si es un componente',
+                'type'      => 'switch',
+                'hint'      =>  'Ejemplo, los componentes tienen un identificador de modelo por ejemplo, como un regulador LM317, y un articulo seria algo comun como un llavero',
+                'default' => 1
+                
+            ],
+            [  // Select
+                'label' => "Elija el articulo",
+                'type' => 'select',
+                'name' => 'idarticulo', // the db column for the foreign key
+
+                // optional
+                // 'entity' should point to the method that defines the relationship in your Model
+                // defining entity will make Backpack guess 'model' and 'attribute'
+                'entity' => 'articulos',
+
+                // optional - manually specify the related model and attribute
+                'model' => "App\Models\Articulo", // related model
+                'attribute' => 'nombre', // foreign key attribute that is shown to user
+
+            ],
+          
+            [
+                'label' => 'cantidad',
+                'type' => 'number',
+                'name' => 'cantidad'
+            ]
+      
+        ]);
+
+        Widget::add()->type('script')
+        ->content('assets/js/admin/forms/inventarioScript.js');
 
         /**
          * Fields can be defined using the fluent syntax:
