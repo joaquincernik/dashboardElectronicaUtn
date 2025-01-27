@@ -2,7 +2,9 @@
 @php
 
 
-  $inventario = \App\Models\Inventario::all();
+  $componentes = \App\Models\Inventario::where('componente',1)->get();
+  $articulos = \App\Models\Inventario::where('componente',0)->get();
+
   $cantidadPersonas = \App\Models\Persona::count();
   $cantidadCursos = \App\Models\Curso::count();
 
@@ -73,17 +75,15 @@ use Backpack\CRUD\app\Library\Widget;
 
 @section('content')
 
-<h1 class="title text-center p-3">Inventario de articulos</h1>
+<h1 class="title text-center p-3">Inventario de productos</h1>
 
-<div class="card">
-
-  <div class="table-responsive">
+<div class="card my-3">
+  <div class="table-responsive py-4">
     <table class="table table-vcenter card-table table-striped">
       <thead>
         <tr>
-          <th>Articulo</th>
-          <th>Precio para socios</th>
-          <th>Precio para no socios</th>
+          <th>Componente</th>
+          <th>Modelo</th>
           <th>Cantidad</th>
 
           <th class="w-1"></th>
@@ -91,26 +91,49 @@ use Backpack\CRUD\app\Library\Widget;
       </thead>
       <tbody>
         <tr>
-          @foreach ($inventario as $item)
-        @foreach ($item->articulos as $articulo)
-        <td>{{$articulo->descripcion}}</td>
+          @foreach ($componentes as $item)
+        <td>{{$item->nombre}}</td>
 
-        <td class="text-secondary">
-        ${{$articulo->preciosocio}}
+        <td>
+        {{$item->modelo}}
         </td>
-        <td class="text-secondary">
-        ${{$articulo->precionosocio}}
-        </td>
+       
         <td>
         {{$item->cantidad}}
         </td>
         </tr>
       @endforeach
-    @endforeach
       </tbody>
     </table>
   </div>
 </div>
+
+<div class="card my-3">
+  <div class="table-responsive py-4">
+    <table class="table table-vcenter card-table table-striped">
+      <thead>
+        <tr>
+          <th>Articulo</th>
+          <th>Cantidad</th>
+
+          <th class="w-1"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          @foreach ($articulos as $item)
+        <td>{{$item->nombre}}</td>
+
+        <td>
+        {{$item->cantidad}}
+        </td>
+        </tr>
+      @endforeach
+      </tbody>
+    </table>
+  </div>
+</div>
+
 
 @endsection
 

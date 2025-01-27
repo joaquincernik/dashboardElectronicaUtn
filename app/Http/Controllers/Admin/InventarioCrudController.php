@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Backpack\CRUD\app\Library\Widget;
-
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
+use Backpack\CRUD\app\Library\Widget;
 
 /**
  * Class InventarioCrudController
@@ -40,8 +39,39 @@ class InventarioCrudController extends CrudController
      */
     protected function setupListOperation()
     {
-        CRUD::setFromDb(); // set columns from db columns.
+        $this->crud->addColumns([
+            [
+                'name' => 'nombre',
+                'type' => 'text',
+                'wrapper' => [  //estilos
+                    'element' => 'span',
+                    'class' => function ($crud, $column, $entry, $related_key) {
+                        if (($entry->componente) == 1) {
+                            return 'badge bg-secondary';
+                        }
+    
+                        return 'badge bg-warning';
+                    },
+                ],
+            ],
+            [
+                'name'        => 'cantidad',
+                'type'        => 'number',
+            ],
+            [
+                'name'        => 'dato_adicional',
+                'type'        => 'text',
+            ],
+            [
+                'name'        => 'modelo',
+                'label'       => 'Modelo comercial',
+                'searchLogic' => function ($query, $column, $searchTerm) {
+                    $query->orWhere('modelo', 'like', '%'.$searchTerm.'%');
+                }
+                ],
+      ]);
 
+       
         /**
          * Columns can be defined using the fluent syntax:
          * - CRUD::column('price')->type('number');
@@ -56,42 +86,14 @@ class InventarioCrudController extends CrudController
      */
     protected function setupCreateOperation()
     {
-        CRUD::addFields([
-            [
-                'name'      => 'componente',
-                'label'     => 'Active el boton si es un componente',
-                'type'      => 'switch',
-                'hint'      =>  'Ejemplo, los componentes tienen un identificador de modelo por ejemplo, como un regulador LM317, y un articulo seria algo comun como un llavero',
-                'default' => 1
-                
-            ],
-            [  // Select
-                'label' => "Elija el articulo",
-                'type' => 'select',
-                'name' => 'idarticulo', // the db column for the foreign key
-
-                // optional
-                // 'entity' should point to the method that defines the relationship in your Model
-                // defining entity will make Backpack guess 'model' and 'attribute'
-                'entity' => 'articulos',
-
-                // optional - manually specify the related model and attribute
-                'model' => "App\Models\Articulo", // related model
-                'attribute' => 'nombre', // foreign key attribute that is shown to user
-
-            ],
-          
-            [
-                'label' => 'cantidad',
-                'type' => 'number',
-                'name' => 'cantidad'
-            ]
-      
-        ]);
+        CRUD::field('componente')->type('switch')->hint('Ejemplo, un <i>regulador LM317</i> es un <b>componente</b>, y un libro de fisica es un <b>articulo</b>');
+        CRUD::field('nombre')->type('text')->label('Nombre');
+        CRUD::field('modelo')->type('text')->label('Modelo comercial')->hint('ejemplo: 4491-LM317-ND ');
+        CRUD::field('cantidad')->type('number');
+        CRUD::field('dato_adicional')->type('text');
 
         Widget::add()->type('script')
-        ->content('assets/js/admin/forms/inventarioScript.js');
-
+        ->content(('assets/js/admin/forms/inventarioScript.js'));
         /**
          * Fields can be defined using the fluent syntax:
          * - CRUD::field('price')->type('number');

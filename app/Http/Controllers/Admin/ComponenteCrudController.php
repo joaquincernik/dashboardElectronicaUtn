@@ -63,7 +63,7 @@ class ComponenteCrudController extends CrudController
     {
         CRUD::field('nombre')->type('text')->label('Nombre del componente')->hint('ejemplo: regulador LM317 ');
         CRUD::field('modelo')->type('text')->label('Modelo comercial')->hint('ejemplo: 4491-LM317-ND ');
-
+        
         CRUD::setFromDb(); // set fields from db columns.
 
         /**

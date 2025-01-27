@@ -17,11 +17,11 @@ class Inventario extends Model
     |--------------------------------------------------------------------------
     */
 
-    protected $table = 'inventario';
-     //protected $primaryKey = 'idcurso';
+    protected $table = 'inventarios';
+    // protected $primaryKey = 'id';
      public $timestamps = false;
-    //protected $guarded = ['idcurso'];
-     protected $fillable = ['componente','cantidad','idarticulo','componente_id'];
+    protected $guarded = ['id'];
+     protected $fillable = ['cantidad','nombre','modelo','dato_adicional','componente'];
     // protected $hidden = [];
 
     /*
@@ -36,12 +36,9 @@ class Inventario extends Model
     |--------------------------------------------------------------------------
     */
 
-    public function articulos(){
-        return $this->hasMany(Articulo::class);
-    }
-
-    public function componentes(){
-        return $this->hasMany(Componente::class,'componente_id','id');
+    public function getModeloCompletoAttribute()
+    {
+        return $this->modelo . ', ' . $this->nombre; 
     }
     /*
     |--------------------------------------------------------------------------
