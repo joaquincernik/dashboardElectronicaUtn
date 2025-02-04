@@ -6,7 +6,7 @@ use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Inventario extends Model
+class Compra extends Model
 {
     use CrudTrait;
     use HasFactory;
@@ -17,11 +17,11 @@ class Inventario extends Model
     |--------------------------------------------------------------------------
     */
 
-    protected $table = 'inventarios';
+    protected $table = 'compras';
     // protected $primaryKey = 'id';
-     public $timestamps = false;
+    // public $timestamps = false;
     protected $guarded = ['id'];
-     protected $fillable = ['cantidad','nombre','modelo','dato_adicional','componente', 'precio', 'precionosocios'];
+     protected $fillable = ['inventarioCompra_id','cantidad','monto'];
     // protected $hidden = [];
 
     /*
@@ -35,15 +35,8 @@ class Inventario extends Model
     | RELATIONS
     |--------------------------------------------------------------------------
     */
-
-    public function getModeloCompletoAttribute()
-    {
-        return $this->modelo . ', ' . $this->nombre; 
-    }
-
-    public function getNombreCantidadAttribute()
-    {
-        return $this->nombre . ', ' . $this->cantidad . ' disponibles'; 
+    public function inventario(){
+        return $this->belongsTo(Inventario::class,'inventarioCompra_id');
     }
     /*
     |--------------------------------------------------------------------------

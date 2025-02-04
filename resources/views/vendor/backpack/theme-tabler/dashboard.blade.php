@@ -2,11 +2,14 @@
 @php
 
 
-  $componentes = \App\Models\Inventario::where('componente',1)->get();
-  $articulos = \App\Models\Inventario::where('componente',0)->get();
+  $componentes = \App\Models\Inventario::where('componente', 1)->orderBy('cantidad', 'asc')->take(5)->get();
+  $articulos = \App\Models\Inventario::where('componente', 0)->orderBy('cantidad', 'asc')->take(5)->get();
 
   $cantidadPersonas = \App\Models\Persona::count();
+  $cantidadPersonasExternas = \App\Models\PersonaExterna::count();
   $cantidadCursos = \App\Models\Curso::count();
+  $cantidadInventario = \App\Models\Inventario::count();
+
 
   $cursoConMasInscriptos = \App\Models\Curso::withCount('personas')
     ->orderBy('personas_count', 'desc')
@@ -27,37 +30,54 @@
 @endphp
 
 @php
-use Backpack\CRUD\app\Library\Widget;
-    // Agregar un widget de tipo 'box' en la sección 'before_content'
-    Widget::add()
-      ->section('before_content')
-      ->type('div')
-      ->class('row')
-      ->content([
-      Widget::make()
+  use Backpack\CRUD\app\Library\Widget;
+  // Agregar un widget de tipo 'box' en la sección 'before_content'
+  Widget::add()
+    ->section('before_content')
+    ->type('div')
+    ->class('row')
+    ->content([
+    Widget::make()
       ->type('progress')
       ->class('card mb-4 py-3')
-      ->ribbon(['top','la-calculator'])
+      ->ribbon(['top', 'la-calculator'])
       ->value($cantidadCursos)
       ->description('Cursos registrados'),
 
-      Widget::make()
+    Widget::make()
       ->type('progress')
       ->class('card mb-4 py-3')
-      ->ribbon(['top','la-user'])
+      ->ribbon(['top', 'la-user'])
       ->value($cantidadPersonas)
       ->description('Usuarios registrados')
       ->accentColor('danger'),
 
-      Widget::make()
+
+    Widget::make()
+      ->type('progress')
+      ->class('card mb-4 py-3')
+      ->ribbon(['top', 'la-user'])
+      ->value($cantidadPersonasExternas)
+      ->description('Personas externas registradas')
+      ->accentColor('warning'),
+
+    Widget::make()
+      ->type('progress')
+      ->class('card mb-4 py-3')
+      ->ribbon(['top', 'la-book'])
+      ->value($cantidadInventario)
+      ->description('Tipos de productos registrados')
+      ->accentColor('secondary'),
+
+    /*Widget::make()
       ->type('progress')
       ->class('card py-2')
-      ->ribbon(['top','la-calculator'])
-      ->value($cursoConMasInscriptos[0]->titulo."<br><h1 class='mt-2 badge bg-primary'>".$cursoConMasInscriptos[0]->personas_count." inscriptos</h1>")
+      ->ribbon(['top', 'la-calculator'])
+      ->value($cursoConMasInscriptos[0]->titulo . "<br><h1 class='mt-2 badge bg-primary'>" . $cursoConMasInscriptos[0]->personas_count . " inscriptos</h1>")
       ->description('Curso con mas usuarios inscriptos')
       ->accentColor('primary'),
-      
-      ]);
+*/
+    ]);
 
 @endphp
 
@@ -75,7 +95,44 @@ use Backpack\CRUD\app\Library\Widget;
 
 @section('content')
 
-<h1 class="title text-center p-3">Inventario de productos</h1>
+<div class="hr-text">Inscripcion a cursos</div>
+
+<div class="container my-5">
+  <div class="d-flex row">
+  <div class="col-6">
+    <a class="card" href="/admin/curso-persona-externa">
+      <div class="card-body d-flex flex-column align-items-center justify-content-center">
+       
+      <svg xmlns="http://www.w3.org/2000/svg" class="m-2 text-danger" width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-user"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0" /><path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" /></svg>
+        
+      <h1 class="text-center p-3">Inscribir a un usuario del sistema a un curso</h1>
+      </div>
+      </a>
+  </div>
+
+  <div class="col-6">
+    <a class="card" href="/admin/curso-persona">
+      <div class="card-body d-flex flex-column align-items-center justify-content-center">
+       
+      <svg  xmlns="http://www.w3.org/2000/svg" class="m-2 text-primary"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-question-mark"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M8 8a3.5 3 0 0 1 3.5 -3h1a3.5 3 0 0 1 3.5 3a3 3 0 0 1 -2 3a3 4 0 0 0 -2 4" /><path d="M12 19l0 .01" /></svg>
+        
+      <h1 class="text-center p-3">Inscribir a un usuario externo a un curso</h1>
+      </div>
+      </a>
+  </div>
+  </div>
+</div>
+
+<div class="d-flex justify-content-center mb-5">
+<a href="/admin/persona" class="btn btn-primary mx-1">Ver usuarios</a>
+<a href="/admin/persona-externa" class="btn btn-primary mx-1">Ver personas externas</a>
+<a href="/admin/curso" class="btn btn-danger mx-1">Ver cursos</a>
+</div>
+
+
+<div class="hr-text">Inventario</div>
+
+<h1 class="title text-center p-3">Productos con menor stock disponible</h1>
 
 <div class="card my-3">
   <div class="table-responsive py-4">
@@ -97,12 +154,12 @@ use Backpack\CRUD\app\Library\Widget;
         <td>
         {{$item->modelo}}
         </td>
-       
+
         <td>
         {{$item->cantidad}}
         </td>
-        </tr>
-      @endforeach
+      </tr>
+    @endforeach
       </tbody>
     </table>
   </div>
@@ -127,12 +184,17 @@ use Backpack\CRUD\app\Library\Widget;
         <td>
         {{$item->cantidad}}
         </td>
-        </tr>
-      @endforeach
+      </tr>
+    @endforeach
       </tbody>
     </table>
   </div>
 </div>
+<div class="d-flex justify-content-center mb-5">
+<a href="/admin/inventario" class="btn btn-danger mx-1">Ver inventario</a>
+</div>
+
+<div class="hr-text">Tabla del debe/haber</div>
 
 
 @endsection

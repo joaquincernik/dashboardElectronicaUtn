@@ -63,6 +63,18 @@ class InventarioCrudController extends CrudController
                 'type'        => 'text',
             ],
             [
+                'name'        => 'precio',
+                'type'        => 'number',
+                'label'       => 'Precio para socios',
+                'prefix'      => '$'
+            ],
+            [
+                'name'        => 'precionosocios',
+                'type'        => 'number',
+                'label'       => 'Precio para no socios',
+                'prefix'      => '$',
+            ],
+            [
                 'name'        => 'modelo',
                 'label'       => 'Modelo comercial',
                 'searchLogic' => function ($query, $column, $searchTerm) {
@@ -91,6 +103,10 @@ class InventarioCrudController extends CrudController
         CRUD::field('modelo')->type('text')->label('Modelo comercial')->hint('ejemplo: 4491-LM317-ND ');
         CRUD::field('cantidad')->type('number');
         CRUD::field('dato_adicional')->type('text');
+        CRUD::field('precio')->label('Precio para socios')->type('number')->prefix('$');
+        CRUD::field('precionosocios')->label('Precio para no socios')->type('number')->prefix('$');
+
+
 
         Widget::add()->type('script')
         ->content(('assets/js/admin/forms/inventarioScript.js'));

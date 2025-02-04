@@ -27,6 +27,8 @@ Route::group([
     Route::crud('persona-externa', 'PersonaExternaCrudController');
     Route::crud('curso-persona-externa', 'CursoPersonaExternaCrudController');
     Route::crud('inventario', 'InventarioCrudController');
+    Route::crud('venta', 'VentaCrudController');
+    Route::crud('compra', 'CompraCrudController');
 }); // this should be the absolute last line of this file
 
 /**
