@@ -141,10 +141,10 @@ class CursoCrudController extends CrudController
             ],
          
             [
-                'name' => 'legajo',
-                'label' => "Legajo del disertante",
-                'type' => 'number',
-                'priority' => 6,
+                'name' => 'docente',
+                'label' => "Docente",
+                'type' => 'boolean',
+                'options' => [0 => 'Alumno', 1 => 'Docente'],
 
             ],
         ]);
@@ -207,10 +207,12 @@ class CursoCrudController extends CrudController
         CRUD::field('capacidad')->suffix('personas');
         CRUD::field('duracion')->suffix('horas');
         CRUD::field('precio')->prefix('$');
-        CRUD::field('precionosocio')->prefix('$');
+        CRUD::field('precionosocio')->prefix('$')->label('Precio para no socios');
+        CRUD::field('docente')
+            ->after('disertante')
+            ->hint('Inserte si el disertante es un alumno o docente de la UTN')
+            ->type('switch');
 
-        CRUD::field('legajo')->after('disertante')->hint('En el caso de que el disertante sea un alumno, insertar legajo');
-        
         /**
          * Fields can be defined using the fluent syntax:
          * - CRUD::field('price')->type('number');

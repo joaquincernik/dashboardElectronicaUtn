@@ -78,7 +78,7 @@ class CompraCrudController extends CrudController
 
         CRUD::addFields([
             [
-                       'label' => 'Cantidad vendida',
+                       'label' => 'Cantidad comprada',
                         'type' => 'number',
                         'name' =>  'cantidad',
             ],
