@@ -102,6 +102,12 @@ class PersonaCrudController extends CrudController
                 'label' => "Direccion",
                 'type' => 'text',
             ],
+
+            [
+                'name' => 'anio',
+                'label' => "Año que cursa",
+                'type' => 'text',
+            ],
         ]);
 
         //$this->crud->addColumn('foto')->beforeColumn('nombre');
@@ -159,6 +165,8 @@ class PersonaCrudController extends CrudController
     {
         CRUD::setValidation(PersonaRequest::class);
         CRUD::setFromDb(); // set fields from db columns.
+        CRUD::field('anio')
+            ->label("Año en el que cursa");
         CRUD::field('foto')->remove();
         CRUD::field([   // Upload
             'name' => 'foto',

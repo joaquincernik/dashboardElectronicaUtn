@@ -98,7 +98,7 @@ class InventarioCrudController extends CrudController
      */
     protected function setupCreateOperation()
     {
-        CRUD::field('componente')->type('switch')->hint('Ejemplo, un <i>regulador LM317</i> es un <b>componente</b>, y un libro de fisica es un <b>articulo</b>');
+        CRUD::field('componente')->type('switch')->default(1)->hint('Ejemplo, un <i>regulador LM317</i> es un <b>componente</b>, y un libro de fisica es un <b>articulo</b>');
         CRUD::field('nombre')->type('text')->label('Nombre');
         CRUD::field('modelo')->type('text')->label('Modelo comercial')->hint('ejemplo: 4491-LM317-ND ');
         CRUD::field('cantidad')->type('number');

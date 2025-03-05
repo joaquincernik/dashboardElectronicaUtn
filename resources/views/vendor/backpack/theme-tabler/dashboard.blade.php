@@ -216,7 +216,7 @@
 <div class="d-flex justify-content-center mb-5">
   <a href="/admin/inventario" class="btn btn-danger mx-1">Ver inventario</a>
 </div>
-
+<!-- 
 <div class="hr-text">Tabla del debe/haber</div>
 
 <div class="card my-3">
@@ -246,7 +246,7 @@
     </table>
   </div>
 </div>
-
+ -->
 
 @endsection
 

@@ -2,16 +2,15 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Requests\ArticuloPagosRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 
 /**
- * Class ArticuloPagosCrudController
+ * Class BalanceCrudController
  * @package App\Http\Controllers\Admin
  * @property-read \Backpack\CRUD\app\Library\CrudPanel\CrudPanel $crud
  */
-class ArticuloPagosCrudController extends CrudController
+class BalanceCrudController extends CrudController
 {
     use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
@@ -26,9 +25,9 @@ class ArticuloPagosCrudController extends CrudController
      */
     public function setup()
     {
-        CRUD::setModel(\App\Models\ArticuloPagos::class);
-        CRUD::setRoute(config('backpack.base.route_prefix') . '/articulo-pagos');
-        CRUD::setEntityNameStrings('articulo pagos', 'articulo pagos');
+        CRUD::setModel(\App\Models\Balance::class);
+        CRUD::setRoute(config('backpack.base.route_prefix') . '/balance');
+        CRUD::setEntityNameStrings('balance', 'balances');
     }
 
     /**
@@ -39,8 +38,12 @@ class ArticuloPagosCrudController extends CrudController
      */
     protected function setupListOperation()
     {
-        CRUD::setFromDb(); // set columns from db columns.
-
+        CRUD::column('created_at')->label('Fecha');
+        CRUD::column('cuenta');
+        CRUD::column('detalle');
+        CRUD::column('deber')->label('Debe')->type('number')->prefix(' $');
+        CRUD::column('haber')->label('Haber')->type('number')->prefix(' $');
+        CRUD::setOperationSetting('lineButtonsAsDropdown', true);
         /**
          * Columns can be defined using the fluent syntax:
          * - CRUD::column('price')->type('number');
@@ -55,7 +58,14 @@ class ArticuloPagosCrudController extends CrudController
      */
     protected function setupCreateOperation()
     {
-        CRUD::setFromDb(); // set fields from db columns.
+        CRUD::field('cuenta')->hint('Ejemplo: Caja');
+        CRUD::field('detalle')->hint('Ingreso por venta de diodos');
+        CRUD::field('debe')
+        ->label('')
+        ->type('radio')
+        ->options([0 => 'Haber', 1 => 'Debe'])
+        ->hint('Elije si esta cuenta impacta en el debe o en el haber');
+        CRUD::field('monto')->label('Monto gastado')->prefix('$');
 
         /**
          * Fields can be defined using the fluent syntax:

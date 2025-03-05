@@ -15,3 +15,5 @@
 <x-backpack::menu-item title="Ventas" icon="la la-money text-success" :link="backpack_url('venta')" />
 <x-backpack::menu-item title="Compras" icon="la la-money text-success" :link="backpack_url('compra')" />
 <x-backpack::menu-item title="Lockers" icon="la la-lock-open text-info" :link="backpack_url('locker')" />
+<x-backpack::menu-item title="Balances" icon="la la-question" :link="backpack_url('balance')" />
+<x-backpack::menu-item title="Cuota socios" icon="la la-question" :link="backpack_url('cuota-socio')" />

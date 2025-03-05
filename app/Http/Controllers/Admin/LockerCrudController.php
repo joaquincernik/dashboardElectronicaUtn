@@ -39,20 +39,32 @@ class LockerCrudController extends CrudController
     protected function setupListOperation()
     {
         CRUD::column('fotoDNI')->label("DNI del responsable")->type('image')->prefix('storage/');
-        CRUD::column('numeroLocker')->label('Numero de locker');
         CRUD::column('persona.nombre_completo')
             ->label('Alumno responsable')
             ->linkTo('persona.show');
+        
+        CRUD::column('numeroLocker')->label('Numero de locker');
         CRUD::column('estadoDevolucion')
             ->label('Estado de devolucion')
-            ->type('boolean')
-            ->options([0 => 'No devuelto', 1 => 'Devuelto'])
+            ->type('radio')
+            ->options(
+                [
+                    3 => 'No devuelto',
+                    1 => 'Devuelto',
+                    2 => 'Reservado',
+                ]
+                     )
             ->wrapper([  //estilos
                 'element' => 'span',
                 'class' => function ($crud, $column, $entry, $related_key) {
                     if (($entry->estadoDevolucion) == 1) {
                         return 'badge bg-success';
                     }
+
+                    if(($entry->estadoDevolucion) == 2) {
+                        return 'badge bg-info';
+                    }
+
 
                     return 'badge bg-danger';
                 },
@@ -97,7 +109,16 @@ class LockerCrudController extends CrudController
         CRUD::field('numeroLocker')->type('number')->label('Numero de locker');
         CRUD::field('nombreAlumnos')->type('textarea')->label('Nombre de alumnos del grupo');
         CRUD::field('listaTelefono')->type('number')->label('Lista de telefonos');
-
+        CRUD::field("estadoDevolucion")
+            ->label("Estado de devolucion")
+            ->type("radio")
+            ->options(
+                [
+                    3  => "No devuelto",
+                    1  => "Devuelto",
+                    2  => "Reservado"
+                ]
+                );
 
         /**
          * Fields can be defined using the fluent syntax:
@@ -114,7 +135,6 @@ class LockerCrudController extends CrudController
     protected function setupUpdateOperation()
     {
         $this->setupCreateOperation();
-        CRUD::field('estadoDevolucion')->type('switch')->label('Devuelto');
-
+        
     }
 }

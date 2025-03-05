@@ -30,6 +30,8 @@ Route::group([
     Route::crud('venta', 'VentaCrudController');
     Route::crud('compra', 'CompraCrudController');
     Route::crud('locker', 'LockerCrudController');
+    Route::crud('balance', 'BalanceCrudController');
+    Route::crud('cuota-socio', 'CuotaSocioCrudController');
 }); // this should be the absolute last line of this file
 
 /**
