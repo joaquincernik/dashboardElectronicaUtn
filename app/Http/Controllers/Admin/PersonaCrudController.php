@@ -104,6 +104,11 @@ class PersonaCrudController extends CrudController
             ],
 
             [
+                'name' => 'mesesAbonados',
+                'label' => "Meses abonados",
+                'type' => 'select_from_array',
+            ],
+            [
                 'name' => 'anio',
                 'label' => "Año que cursa",
                 'type' => 'text',
@@ -125,6 +130,7 @@ class PersonaCrudController extends CrudController
     protected function setupShowOperation()
     {
         $this->setupListOperation();
+       
         $this->crud->column([
             // Select
 
@@ -168,7 +174,8 @@ class PersonaCrudController extends CrudController
         CRUD::field('anio')
             ->label("Año en el que cursa");
         CRUD::field('foto')->remove();
-        CRUD::field([   // Upload
+        CRUD::field('mesesAbonados')->remove();
+        CRUD::addField([   // Upload
             'name' => 'foto',
             'label' => 'Foto',
             'type' => 'upload',

@@ -21,7 +21,7 @@ class Persona extends Model
      protected $primaryKey = 'id';
      public $timestamps = false;
     protected $guarded = ['id'];
-     protected $fillable = ['nombre','apellido','direccion','mail','telefono','socio','foto','legajo','dni'];
+     protected $fillable = ['nombre','apellido','direccion','mail','telefono','socio','foto','legajo','dni','anio','mesesAbonados'];
     // protected $hidden = [];
 
     /*
@@ -29,6 +29,9 @@ class Persona extends Model
     | FUNCTIONS
     |--------------------------------------------------------------------------
     */
+    protected $casts = [
+        'mesesAbonados' => 'array',
+    ];
 
     public function getNombreCompletoAttribute()
     {

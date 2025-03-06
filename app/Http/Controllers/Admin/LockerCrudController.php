@@ -108,7 +108,7 @@ class LockerCrudController extends CrudController
         
         CRUD::field('numeroLocker')->type('number')->label('Numero de locker');
         CRUD::field('nombreAlumnos')->type('textarea')->label('Nombre de alumnos del grupo');
-        CRUD::field('listaTelefono')->type('number')->label('Lista de telefonos');
+        CRUD::field('listaTelefonos')->type('textarea')->label('Lista de telefonos');
         CRUD::field("estadoDevolucion")
             ->label("Estado de devolucion")
             ->type("radio")

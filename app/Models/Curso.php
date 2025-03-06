@@ -31,9 +31,19 @@ class Curso extends Model
     */
     public function getCursoCompletoAttribute()
     {
-        return $this->titulo . ' ($' . $this->precio . ', $' . $this->precionosocio . ')';  // Asume que tienes campos 'nombre' y 'apellido'
+        return $this->titulo . ' ($' . $this->precio . ', $' . $this->precionosocio . ')'; 
     }
 
+    public function getPrecioAttribute($value)
+    {
+        // Formatea el valor con puntos (.) como separador de miles
+        return number_format($value, 0, '.', '.');
+    }
+    public function getPrecioNoSocioAttribute($value)
+    {
+        // Formatea el valor con puntos (.) como separador de miles
+        return number_format($value, 0, '.', '.');
+    }
     /*
     |--------------------------------------------------------------------------
     | RELATIONS

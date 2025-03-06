@@ -29,7 +29,9 @@ class PersonaExterna extends Model
     | FUNCTIONS
     |--------------------------------------------------------------------------
     */
-
+    protected $casts = [
+        'mesesAbonados' => 'array',
+    ];
     /*
     |--------------------------------------------------------------------------
     | RELATIONS

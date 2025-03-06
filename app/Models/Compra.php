@@ -29,7 +29,11 @@ class Compra extends Model
     | FUNCTIONS
     |--------------------------------------------------------------------------
     */
-
+    public function getMontoAttribute($value)
+    {
+        // Formatea el valor con puntos (.) como separador de miles
+        return number_format($value, 0, '.', '.');
+    }
     /*
     |--------------------------------------------------------------------------
     | RELATIONS

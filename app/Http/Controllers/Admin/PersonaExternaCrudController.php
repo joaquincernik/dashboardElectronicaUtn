@@ -39,8 +39,11 @@ class PersonaExternaCrudController extends CrudController
      */
     protected function setupListOperation()
     {
-        CRUD::column('nombre')->type('text')->label("Nombre y Apellido");
+        CRUD::column('nombre')
+            ->type('text')
+            ->label("Nombre y Apellido");
         CRUD::setFromDb();
+        CRUD::column('mesesAbonados')->type('select_from_array');
        
         /**
          * Columns can be defined using the fluent syntax:
@@ -56,7 +59,7 @@ class PersonaExternaCrudController extends CrudController
     protected function setupCreateOperation()
     {
        
-        CRUD::field([
+        CRUD::addField([
             'name'      => 'nombre',
             'label'     => 'Nombre y Apellido',
             'type'      => 'text',
@@ -64,7 +67,7 @@ class PersonaExternaCrudController extends CrudController
         ]);
 
     
-        CRUD::field([
+        CRUD::addField([
             'name'      => 'estudiante',
             'label'     => 'Estudia en alguna facultad?',
             'type'      => 'switch',

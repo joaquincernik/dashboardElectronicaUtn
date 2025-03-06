@@ -30,7 +30,11 @@ class Venta extends Model
     | FUNCTIONS
     |--------------------------------------------------------------------------
     */
-
+    public function getPrecioVentaAttribute($value)
+    {
+        // Formatea el valor con puntos (.) como separador de miles
+        return number_format($value, 0, '.', '.');
+    }
     /*
     |--------------------------------------------------------------------------
     | RELATIONS

@@ -45,6 +45,7 @@ class CuotaSocioCrudController extends CrudController
                 'label' => 'Persona',
                 'type' => 'text',
                 'linkTo' => 'persona.show',
+                
             ]);
         
         $this->crud->addColumn(
@@ -55,11 +56,14 @@ class CuotaSocioCrudController extends CrudController
                 'linkTo' => 'persona-externa.show',
             ]);
         
+        CRUD::column('monto')
+            ->prefix('$');        
         CRUD::column('meses')
             ->type('select_from_array');
-        CRUD::column('monto')
-            ->prefix('$');
      
+
+        CRUD::setOperationSetting('lineButtonsAsDropdown', true);
+
         /**
          * Columns can be defined using the fluent syntax:
          * - CRUD::column('price')->type('number');
@@ -93,7 +97,19 @@ class CuotaSocioCrudController extends CrudController
                 // optional - manually specify the related model and attribute
                 'model' => "App\Models\Persona", // related model
                 'attribute' => 'nombre_completo_legajo', // foreign key attribute that is shown to user
-
+                
+                'events' =>[
+                    'saved' => function($entry){
+                        $persona = \App\Models\Persona::find($entry->persona_socio_id);
+                        if ($persona) { 
+                            $persona->socio = 1; // Cambia el estado
+                            $persona->mesesAbonados = $entry->meses;
+                            $persona->save(); // Guarda los cambios en la BD
+                        }
+                        
+                        
+                    }
+                ],
                 'options' => (function ($query) {
                     return $query->orderBy('apellido', 'ASC')->get();
                 }), //  you can use this to filter the results show in the select
@@ -111,7 +127,18 @@ class CuotaSocioCrudController extends CrudController
                 // optional - manually specify the related model and attribute
                 'model' => "App\Models\PersonaExterna", // related model
                 'attribute' => 'nombre', // foreign key attribute that is shown to user
-                
+                'events' =>[
+                    'saved' => function($entry){
+                        $personaExt = \App\Models\PersonaExterna::find($entry->persona_ext_socio_id);
+                        if ($personaExt) { 
+                            $personaExt->socio = 1; // Cambia el estado
+                            $personaExt->mesesAbonados = $entry->meses;
+                            $personaExt->save(); // Guarda los cambios en la BD
+                        }
+                        
+                        
+                    }
+                ],
             ],
             [
                 'name' => 'monto',
@@ -144,7 +171,15 @@ class CuotaSocioCrudController extends CrudController
                 'allows_null' => false,
                 'default'     => 'enero',
                 'allows_multiple' => true,
-                // 'allows_multiple' => true, // OPTIONAL; needs you to cast this to array in your model;
+                /*'events' =>[
+                'saved' => function($entry){
+                    $persona = \App\Models\Persona::find($entry->persona_socio_id);
+                    if ($persona) { 
+                        $persona->mesesAbonados = $entry->meses; // Cambia el estado
+                        $persona->save(); // Guarda los cambios en la BD
+                    }
+                }
+            ],*/
             ]
             ]);
         Widget::add()->type('script')
