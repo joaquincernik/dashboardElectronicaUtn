@@ -49,41 +49,41 @@ class InventarioCrudController extends CrudController
                         if (($entry->componente) == 1) {
                             return 'badge bg-secondary';
                         }
-    
+
                         return 'badge bg-warning';
                     },
                 ],
             ],
             [
-                'name'        => 'cantidad',
-                'type'        => 'number',
+                'name' => 'cantidad',
+                'type' => 'number',
             ],
             [
-                'name'        => 'dato_adicional',
-                'type'        => 'text',
+                'name' => 'dato_adicional',
+                'type' => 'text',
             ],
             [
-                'name'        => 'precio',
-                'type'        => 'number',
-                'label'       => 'Precio para socios',
-                'prefix'      => '$'
+                'name' => 'precio',
+                'type' => 'number',
+                'label' => 'Precio para socios',
+                'prefix' => '$'
             ],
             [
-                'name'        => 'precionosocios',
-                'type'        => 'number',
-                'label'       => 'Precio para no socios',
-                'prefix'      => '$',
+                'name' => 'precionosocios',
+                'type' => 'number',
+                'label' => 'Precio para no socios',
+                'prefix' => '$',
             ],
             [
-                'name'        => 'modelo',
-                'label'       => 'Modelo comercial',
+                'name' => 'modelo',
+                'label' => 'Modelo comercial',
                 'searchLogic' => function ($query, $column, $searchTerm) {
-                    $query->orWhere('modelo', 'like', '%'.$searchTerm.'%');
+                    $query->orWhere('modelo', 'like', '%' . $searchTerm . '%');
                 }
-                ],
-      ]);
+            ],
+        ]);
 
-       
+
         /**
          * Columns can be defined using the fluent syntax:
          * - CRUD::column('price')->type('number');
@@ -101,19 +101,21 @@ class InventarioCrudController extends CrudController
         CRUD::field('componente')->type('switch')->default(1)->hint('Ejemplo, un <i>regulador LM317</i> es un <b>componente</b>, y un libro de fisica es un <b>articulo</b>');
         CRUD::field('nombre')->type('text')->label('Nombre');
         CRUD::field('modelo')->type('text')->label('Modelo comercial')->hint('ejemplo: 4491-LM317-ND ');
-        CRUD::field('cantidad')->type('number');
         CRUD::field('dato_adicional')->type('text');
+        CRUD::field('cantidad')->type('number');
         CRUD::field('precio')->label('Precio para socios')->type('number')->prefix('$');
         CRUD::field('precionosocios')->label('Precio para no socios')->type('number')->prefix('$');
 
 
 
         Widget::add()->type('script')
-        ->content(('assets/js/admin/forms/inventarioScript.js'));
-        /**
-         * Fields can be defined using the fluent syntax:
-         * - CRUD::field('price')->type('number');
-         */
+            ->content(('assets/js/admin/forms/inventarioScript.js'));
+
+        $rules = ['nombre' => 'required'];
+        $messages = [
+            'required' => 'Campo requerido'
+        ];
+        $this->crud->setValidation($rules, $messages);
     }
 
     /**

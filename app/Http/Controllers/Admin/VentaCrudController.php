@@ -108,7 +108,7 @@ class VentaCrudController extends CrudController
                     }
                 }
             ],
-            'inventario_id' => 'required|exists:inventarios,id'
+           // 'inventario_id' => 'required|exists:inventarios,id'
         ]);
 
         /*CRUD::field('precioVenta')->on('saving', function ($entry) {

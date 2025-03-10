@@ -61,16 +61,20 @@ class BalanceCrudController extends CrudController
         CRUD::field('cuenta')->hint('Ejemplo: Caja');
         CRUD::field('detalle')->hint('Ingreso por venta de diodos');
         CRUD::field('debe')
-        ->label('')
-        ->type('radio')
-        ->options([0 => 'Haber', 1 => 'Debe'])
-        ->hint('Elije si esta cuenta impacta en el debe o en el haber');
+            ->label('')
+            ->type('radio')
+            ->options([0 => 'Haber', 1 => 'Debe'])
+            ->hint('Elije si esta cuenta impacta en el debe o en el haber');
         CRUD::field('monto')->label('Monto gastado')->prefix('$');
 
-        /**
-         * Fields can be defined using the fluent syntax:
-         * - CRUD::field('price')->type('number');
-         */
+        $rules = [ 'cuenta' => 'required',
+        'debe' => 'required',
+        'monto' => 'numeric',];
+        $messages = [
+            'required' => 'Campo requerido',
+            'numeric' => 'Ingresa un numero',
+        ];
+        $this->crud->setValidation($rules, $messages);
     }
 
     /**
@@ -82,5 +86,7 @@ class BalanceCrudController extends CrudController
     protected function setupUpdateOperation()
     {
         $this->setupCreateOperation();
+
+
     }
 }

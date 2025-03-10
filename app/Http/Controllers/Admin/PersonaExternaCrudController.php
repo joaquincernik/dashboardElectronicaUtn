@@ -83,10 +83,17 @@ class PersonaExternaCrudController extends CrudController
 
         Widget::add()->type('script')
         ->content(('assets/js/admin/forms/personaExternaScript.js'));
-        /**
-         * Fields can be defined using the fluent syntax:
-         * - CRUD::field('price')->type('number');
-         */
+
+        $rules = [
+            'nombre' => 'required',
+        ];
+        $messages = [
+            'required' => 'Campo requerido',
+            'numeric' => 'Ingresa un numero',
+        ];
+        $this->crud->setValidation($rules, $messages);
+
+
     }
 
     /**

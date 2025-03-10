@@ -64,7 +64,8 @@ class CursoPersonaCrudController extends CrudController
                 'searchLogic' => function ($query, $column, $searchTerm) {
                     // Hacemos join con la tabla personas para buscar por apellido
                     $query->orWhereHas('persona', function ($q) use ($searchTerm) {
-                        $q->where('apellido', 'like', '%' . $searchTerm . '%');
+                        $q->where('nombre', 'like', '%' . $searchTerm . '%')
+                           ->orWhere('apellido', 'like', '%' . $searchTerm . '%');
                     });
                 }
 
@@ -199,13 +200,6 @@ class CursoPersonaCrudController extends CrudController
             ],
 
         ]);
-
-
-
-        /**
-         * Fields can be defined using the fluent syntax:
-         * - CRUD::field('price')->type('number');
-         */
 
         // Setters
         $this->crud->setTitle('Ficha de inscripcion de usuarios a cursos', 'create'); // set the Title for the create action

@@ -44,7 +44,8 @@ class CompraCrudController extends CrudController
                 'label' => 'Producto',
                 'type' => 'text',
                 'linkTo' => 'inventario.show',
-            ]);
+            ]
+        );
 
         CRUD::column('monto')->label('Monto gastado')->prefix('$');
         CRUD::column('cantidad')->label('Cantidad comprada');
@@ -71,31 +72,38 @@ class CompraCrudController extends CrudController
             ->label('Producto')
             ->attribute('nombre_cantidad')
             ->events([
-                'saved' => function($entry){
-                    \App\Models\Inventario::find($entry->inventarioCompra_id)->increment('cantidad',$entry->cantidad);
+                'saved' => function ($entry) {
+                    \App\Models\Inventario::find($entry->inventarioCompra_id)->increment('cantidad', $entry->cantidad);
                 }
-                ]);
-
+            ])
+            ->options((function ($query) {
+                return $query->orderBy('nombre', 'ASC')->get();
+            }))
+        ;
         CRUD::addFields([
             [
-                       'label' => 'Cantidad comprada',
-                        'type' => 'number',
-                        'name' =>  'cantidad',
+                'label' => 'Cantidad comprada',
+                'type' => 'number',
+                'name' => 'cantidad',
             ],
             [
-                        'label' => 'Monto gastado',
-                         'type' => 'number',
-                         'name' =>'monto',
-                         'prefix' => '$'
+                'label' => 'Monto gastado',
+                'type' => 'number',
+                'name' => 'monto',
+                'prefix' => '$'
             ]
-                    
-                ]);
-        
 
-        /**
-         * Fields can be defined using the fluent syntax:
-         * - CRUD::field('price')->type('number');
-         */
+        ]);
+
+
+        $this->crud->setValidation([
+            'cantidad' => [
+                'required',
+                'integer',
+                'min:1',
+            ],
+           // 'inventario_id' => 'required|exists:inventarios,id'
+        ]);
     }
 
     /**

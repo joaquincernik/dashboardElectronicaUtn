@@ -45,22 +45,33 @@ class CuotaSocioCrudController extends CrudController
                 'label' => 'Persona',
                 'type' => 'text',
                 'linkTo' => 'persona.show',
-                
-            ]);
-        
+                'searchLogic' => function ($query, $column, $searchTerm) {
+                    $query->orWhereHas('persona', function ($q) use ($column, $searchTerm) {
+                        $q->where('nombre', 'like', '%' . $searchTerm . '%');
+                    });
+                }
+            ]
+        );
+
         $this->crud->addColumn(
             [
                 'name' => 'persona_externa.nombre',
                 'label' => 'Persona externa',
                 'type' => 'text',
                 'linkTo' => 'persona-externa.show',
-            ]);
-        
+                'searchLogic' => function ($query, $column, $searchTerm) {
+                    $query->orWhereHas('persona_externa', function ($q) use ($column, $searchTerm) {
+                        $q->where('nombre', 'like', '%' . $searchTerm . '%');
+                    });
+                }
+            ]
+        );
+
         CRUD::column('monto')
-            ->prefix('$');        
+            ->prefix('$');
         CRUD::column('meses')
             ->type('select_from_array');
-     
+
 
         CRUD::setOperationSetting('lineButtonsAsDropdown', true);
 
@@ -81,8 +92,8 @@ class CuotaSocioCrudController extends CrudController
         CRUD::addFields([
             [
                 'label' => "Socio externo",
-                'type'  => 'checkbox',
-                'name'  => 'persona_ext'
+                'type' => 'checkbox',
+                'name' => 'persona_ext'
             ],
             [  // Select
                 'label' => "Nombre completo de la persona",
@@ -97,17 +108,17 @@ class CuotaSocioCrudController extends CrudController
                 // optional - manually specify the related model and attribute
                 'model' => "App\Models\Persona", // related model
                 'attribute' => 'nombre_completo_legajo', // foreign key attribute that is shown to user
-                
-                'events' =>[
-                    'saved' => function($entry){
+
+                'events' => [
+                    'saved' => function ($entry) {
                         $persona = \App\Models\Persona::find($entry->persona_socio_id);
-                        if ($persona) { 
+                        if ($persona) {
                             $persona->socio = 1; // Cambia el estado
                             $persona->mesesAbonados = $entry->meses;
                             $persona->save(); // Guarda los cambios en la BD
                         }
-                        
-                        
+
+
                     }
                 ],
                 'options' => (function ($query) {
@@ -127,16 +138,16 @@ class CuotaSocioCrudController extends CrudController
                 // optional - manually specify the related model and attribute
                 'model' => "App\Models\PersonaExterna", // related model
                 'attribute' => 'nombre', // foreign key attribute that is shown to user
-                'events' =>[
-                    'saved' => function($entry){
+                'events' => [
+                    'saved' => function ($entry) {
                         $personaExt = \App\Models\PersonaExterna::find($entry->persona_ext_socio_id);
-                        if ($personaExt) { 
+                        if ($personaExt) {
                             $personaExt->socio = 1; // Cambia el estado
                             $personaExt->mesesAbonados = $entry->meses;
                             $personaExt->save(); // Guarda los cambios en la BD
                         }
-                        
-                        
+
+
                     }
                 ],
             ],
@@ -147,29 +158,29 @@ class CuotaSocioCrudController extends CrudController
                 'prefix' => '$',
             ],
             [   // select_from_array
-                'name'        => 'meses',
-                'label'       => "Meses abonados",
-                'hint'        => "Para seleccionar mas de un mes, oprima CTRL y selecciona los demas meses",
-                'type'        => 'select_from_array',
-                'options'     => 
+                'name' => 'meses',
+                'label' => "Meses abonados",
+                'hint' => "Para seleccionar mas de un mes, oprima CTRL y selecciona los demas meses",
+                'type' => 'select_from_array',
+                'options' =>
                     [
-                    'enero' => 'Enero',
-                    'febrero' => 'Febrero',
-                    'marzo' => 'Marzo',
-                    'abril' => 'Abril',
-                    'mayo' => 'Mayo',
-                    'junio' => 'Junio',
-                    'julio' => 'Julio',
-                    'agosto' => 'Agosto',
-                    'septiembre' => 'Septiembre',
-                    'octubre' => 'Octubre',
-                    'noviembre' => 'Noviembre',
-                    'diciembre' => 'Diciembre'
+                        'enero' => 'Enero',
+                        'febrero' => 'Febrero',
+                        'marzo' => 'Marzo',
+                        'abril' => 'Abril',
+                        'mayo' => 'Mayo',
+                        'junio' => 'Junio',
+                        'julio' => 'Julio',
+                        'agosto' => 'Agosto',
+                        'septiembre' => 'Septiembre',
+                        'octubre' => 'Octubre',
+                        'noviembre' => 'Noviembre',
+                        'diciembre' => 'Diciembre'
 
 
                     ],
                 'allows_null' => false,
-                'default'     => 'enero',
+                'default' => 'enero',
                 'allows_multiple' => true,
                 /*'events' =>[
                 'saved' => function($entry){
@@ -181,18 +192,20 @@ class CuotaSocioCrudController extends CrudController
                 }
             ],*/
             ]
-            ]);
+        ]);
+        CRUD::setFromDb(); // set fields from db columns.
         Widget::add()->type('script')
             ->content(('assets/js/admin/forms/cuotaScript.js'));
-        
 
 
-        CRUD::setFromDb(); // set fields from db columns.
+        $rules = ['monto' => 'required|numeric'];
+        $messages = [
+            'required' => 'Campo requerido',
+            'numeric' => 'Ingresa un numero',
+        ];
+        $this->crud->setValidation($rules, $messages);
 
-        /**
-         * Fields can be defined using the fluent syntax:
-         * - CRUD::field('price')->type('number');
-         */
+
     }
 
     /**

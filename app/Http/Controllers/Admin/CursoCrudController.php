@@ -149,10 +149,7 @@ class CursoCrudController extends CrudController
             ],
         ]);
 
-        /**
-         * Columns can be defined using the fluent syntax:
-         * - CRUD::column('price')->type('number');
-         */
+     
         CRUD::setOperationSetting('lineButtonsAsDropdown', true);
 
     }
@@ -213,10 +210,16 @@ class CursoCrudController extends CrudController
             ->hint('Inserte si el disertante es un alumno o docente de la UTN')
             ->type('switch');
 
-        /**
-         * Fields can be defined using the fluent syntax:
-         * - CRUD::field('price')->type('number');
-         */
+            $rules = [
+                'titulo' => 'required',
+               
+        ];
+            $messages = [
+                'required' => 'Campo requerido',
+                'numeric' => 'Ingresa un numero',
+            ];
+            $this->crud->setValidation($rules, $messages);
+    
     }
 
     /**

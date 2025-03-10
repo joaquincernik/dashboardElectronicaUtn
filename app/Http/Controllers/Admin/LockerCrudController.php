@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
+use function Laravel\Prompts\search;
 
 /**
  * Class LockerCrudController
@@ -38,12 +39,21 @@ class LockerCrudController extends CrudController
      */
     protected function setupListOperation()
     {
-        CRUD::column('fotoDNI')->label("DNI del responsable")->type('image')->prefix('storage/');
+        CRUD::column('fotoDNI')->label("DNI del responsable")
+            ->type('image')
+            ->prefix('storage/');
+
         CRUD::column('persona.nombre_completo')
             ->label('Alumno responsable')
-            ->linkTo('persona.show');
-        
+            ->linkTo('persona.show')
+            ->searchLogic(function ($query, $column, $searchTerm) {
+                $query->orWhereHas('persona', function ($q) use ($column, $searchTerm) {
+                    $q->where('nombre', 'like', '%' . $searchTerm . '%');
+                });
+            });
+
         CRUD::column('numeroLocker')->label('Numero de locker');
+
         CRUD::column('estadoDevolucion')
             ->label('Estado de devolucion')
             ->type('radio')
@@ -53,7 +63,7 @@ class LockerCrudController extends CrudController
                     1 => 'Devuelto',
                     2 => 'Reservado',
                 ]
-                     )
+            )
             ->wrapper([  //estilos
                 'element' => 'span',
                 'class' => function ($crud, $column, $entry, $related_key) {
@@ -61,7 +71,7 @@ class LockerCrudController extends CrudController
                         return 'badge bg-success';
                     }
 
-                    if(($entry->estadoDevolucion) == 2) {
+                    if (($entry->estadoDevolucion) == 2) {
                         return 'badge bg-info';
                     }
 
@@ -69,8 +79,11 @@ class LockerCrudController extends CrudController
                     return 'badge bg-danger';
                 },
             ]);
+
         CRUD::column('created_at')->label('Fecha de registro');
+
         CRUD::column('nombreAlumnos')->label('Alumnos en el grupo');
+
         CRUD::column('listaTelefonos')->label('Lista de telefonos');
 
         /**
@@ -82,7 +95,7 @@ class LockerCrudController extends CrudController
     protected function setupShowOperation()
     {
         $this->setupListOperation();
-        
+
     }
 
 
@@ -105,7 +118,7 @@ class LockerCrudController extends CrudController
             ->label('Alumno responsable de la llave')
             ->entity('persona')
             ->attribute('nombre_completo_legajo');
-        
+
         CRUD::field('numeroLocker')->type('number')->label('Numero de locker');
         CRUD::field('nombreAlumnos')->type('textarea')->label('Nombre de alumnos del grupo');
         CRUD::field('listaTelefonos')->type('textarea')->label('Lista de telefonos');
@@ -114,16 +127,20 @@ class LockerCrudController extends CrudController
             ->type("radio")
             ->options(
                 [
-                    3  => "No devuelto",
-                    1  => "Devuelto",
-                    2  => "Reservado"
+                    3 => "No devuelto",
+                    1 => "Devuelto",
+                    2 => "Reservado"
                 ]
-                );
+            );
 
-        /**
-         * Fields can be defined using the fluent syntax:
-         * - CRUD::field('price')->type('number');
-         */
+        $rules = [
+            'estadoDevolucion' => 'required',
+        ];
+        $messages = [
+            'required' => 'Campo requerido',
+            'numeric' => 'Ingresa un numero',
+        ];
+        $this->crud->setValidation($rules, $messages);
     }
 
     /**
@@ -135,6 +152,6 @@ class LockerCrudController extends CrudController
     protected function setupUpdateOperation()
     {
         $this->setupCreateOperation();
-        
+
     }
 }
