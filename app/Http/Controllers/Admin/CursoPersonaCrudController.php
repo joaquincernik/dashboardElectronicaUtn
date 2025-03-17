@@ -109,7 +109,8 @@ class CursoPersonaCrudController extends CrudController
                     'element' => 'span',
                     'class' => 'text-success'
                 ],
-                'prefix' => '$'
+                'prefix' => '$',
+                
 
 
             ],

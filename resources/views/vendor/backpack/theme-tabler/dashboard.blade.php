@@ -251,7 +251,7 @@
   <div class="d-flex justify-content-center mb-5">
     <a href="/admin/inventario" class="btn btn-danger mx-1">Ver inventario</a>
   </div>
-
+<!-- 
   <div class="d-flex row">
     <div class="col-6">
     <a class="card" href="/admin/compra">
@@ -285,7 +285,7 @@
       </div>
     </a>
     </div>
-  </div>
+  </div> -->
   <!-- 
   <div class="hr-text">Tabla del debe/haber</div>
 

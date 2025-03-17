@@ -11,6 +11,7 @@ Artisan::command('inspire', function () {
 
  
 Schedule::command('app:desactivar-socios')->yearly();
+Schedule::command('app:ingreso-semanal')->weekly()->fridays()->at('17:00');
 
 //ver tema crontab
 /**crontab -e

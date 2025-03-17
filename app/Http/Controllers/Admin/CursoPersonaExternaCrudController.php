@@ -49,8 +49,16 @@ class CursoPersonaExternaCrudController extends CrudController
                 'type' => 'text',
                 'linkTo' => 'persona-externa.show',
                 'wrapper' => [
-                    'class' => 'text-decoration-none',
-                ],
+                    'element' => 'a',
+                    'class' => function ($crud, $column, $entry, $related_key) {
+                        if (($entry->persona_externa->socio) == 1) {
+                            return 'text-decoration-none text-success';
+                        } else {
+
+                            return 'text-decoration-none text-warning';
+                        }
+                    },
+                ]
             ],
             [
                 'name' => 'curso.titulo',
@@ -77,7 +85,18 @@ class CursoPersonaExternaCrudController extends CrudController
                         }
                     },
                 ]
-            ],        
+            ], 
+            [
+                'name' => 'curso.precio',
+                'label' => 'Precio para socios',
+                'type' => 'text',
+                'wrapper' => [
+                    'element' => 'span',
+                    'class' => 'text-success'
+                ],
+                'prefix' => '$'
+
+            ],       
             [
                 'name' => 'curso.precionosocio',
                 'label' => 'Precio no socios',
@@ -90,8 +109,7 @@ class CursoPersonaExternaCrudController extends CrudController
 
 
             ],
-
-
+    
             [
                 'name' => 'created_at',
                 'label' => 'Fecha de pago',
@@ -172,10 +190,6 @@ class CursoPersonaExternaCrudController extends CrudController
 
         ]);
 
-        /**
-         * Fields can be defined using the fluent syntax:
-         * - CRUD::field('price')->type('number');
-         */
     }
 
     /**

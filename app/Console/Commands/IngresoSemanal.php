@@ -60,6 +60,7 @@ class IngresoSemanal extends Command
 
             //para ejecutar el comando de ingresos, 
 
+        $this->info("Ingreso semanal registrado: Semana $numeroSemana - Monto: $total");
 
        
 
