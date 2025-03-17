@@ -10,7 +10,7 @@ use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
  * @package App\Http\Controllers\Admin
  * @property-read \Backpack\CRUD\app\Library\CrudPanel\CrudPanel $crud
  */
-class BalanceCrudController extends CrudController
+class IngresoCrudController extends CrudController
 {
     use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
@@ -25,9 +25,9 @@ class BalanceCrudController extends CrudController
      */
     public function setup()
     {
-        CRUD::setModel(\App\Models\Balance::class);
-        CRUD::setRoute(config('backpack.base.route_prefix') . '/balance');
-        CRUD::setEntityNameStrings('balance', 'balances');
+        CRUD::setModel(\App\Models\Ingreso::class);
+        CRUD::setRoute(config('backpack.base.route_prefix') . '/ingreso');
+        CRUD::setEntityNameStrings('ingreso', 'ingresos');
     }
 
     /**
@@ -38,11 +38,11 @@ class BalanceCrudController extends CrudController
      */
     protected function setupListOperation()
     {
-        CRUD::column('created_at')->label('Fecha');
-        CRUD::column('cuenta');
-        CRUD::column('detalle');
-        CRUD::column('deber')->label('Debe')->type('number')->prefix(' $');
-        CRUD::column('haber')->label('Haber')->type('number')->prefix(' $');
+        CRUD::column('inicioSemana')->type('date')->label('Inicio de semana');
+        CRUD::column('finSemana')->type('date')->label('Fin de semana');
+        CRUD::column('monto')->type('number')->prefix("$");
+        CRUD::column('detalle')->type('text');
+       
         CRUD::setOperationSetting('lineButtonsAsDropdown', true);
         /**
          * Columns can be defined using the fluent syntax:
@@ -58,23 +58,11 @@ class BalanceCrudController extends CrudController
      */
     protected function setupCreateOperation()
     {
-        CRUD::field('cuenta')->hint('Ejemplo: Caja');
-        CRUD::field('detalle')->hint('Ingreso por venta de diodos');
-        CRUD::field('debe')
-            ->label('')
-            ->type('radio')
-            ->options([0 => 'Haber', 1 => 'Debe'])
-            ->hint('Elije si esta cuenta impacta en el debe o en el haber');
-        CRUD::field('monto')->label('Monto gastado')->prefix('$');
+       
+        CRUD::field('monto')->label('Ingresos')->prefix('$');
+    
 
-        $rules = [ 'cuenta' => 'required',
-        'debe' => 'required',
-        'monto' => 'numeric',];
-        $messages = [
-            'required' => 'Campo requerido',
-            'numeric' => 'Ingresa un numero',
-        ];
-        $this->crud->setValidation($rules, $messages);
+       
     }
 
     /**

@@ -6,7 +6,7 @@ use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Balance extends Model
+class Ingreso extends Model
 {
     use CrudTrait;
     use HasFactory;
@@ -17,7 +17,7 @@ class Balance extends Model
     |--------------------------------------------------------------------------
     */
 
-    protected $table = 'balances';
+    protected $table = 'ingresos';
     // protected $primaryKey = 'id';
     // public $timestamps = false;
     protected $guarded = ['id'];
@@ -29,15 +29,7 @@ class Balance extends Model
     | FUNCTIONS
     |--------------------------------------------------------------------------
     */
-    public function getDeberAttribute()
-    {
-        return $this->debe ? $this->monto : null;
-    }
-    
-    public function getHaberAttribute()
-    {
-        return !$this->debe ? ($this->monto) : null;
-    }
+   
     /*
     |--------------------------------------------------------------------------
     | RELATIONS

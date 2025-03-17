@@ -22,7 +22,7 @@ class Venta extends Model
     // protected $primaryKey = 'id';
     // public $timestamps = false;
     protected $guarded = ['id'];
-    protected $fillable = ['inventario_id','cantidad','precioVenta','socio'];
+    protected $fillable = ['inventario_id','cantidad','precioVenta','socio','efectivo'];
     // protected $hidden = [];
 
     /*

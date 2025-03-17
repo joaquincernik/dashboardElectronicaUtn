@@ -50,6 +50,16 @@ class VentaCrudController extends CrudController
         CRUD::column('precioVenta')->label('Precio total de venta')->prefix('$');
         CRUD::column('cantidad')->label('Cantidad vendida');
         CRUD::column('created_at')->label('Fecha de venta');
+        CRUD::column('efectivo')
+        ->label('Metodo de pago')
+        ->type('radio')
+        ->options(
+            [
+                2 => 'Efectivo',
+                1 => 'Transferencia',
+            ]
+        )
+        ;
 
         /**
          * Columns can be defined using the fluent syntax:
@@ -92,9 +102,18 @@ class VentaCrudController extends CrudController
                 'label' => 'Producto vendido a un socio',
                  'type' => 'switch',
                  'name' =>'socio'
-             ]
-            
+            ],        
         ]);
+        CRUD::field("efectivo")
+        ->label("Metodo de pago")
+        ->type("radio")
+        ->options(
+            [
+                2 => "Efectivo",
+                1 => "Transferencia",   
+            ]
+        )
+        ;
 
         $this->crud->setValidation([
             'cantidad' => [

@@ -105,7 +105,46 @@
 @endsection
 
 @section('content')
+<div class="hr-text">Inscripcion de personas al sistema</div>
+<div class="container my-5">
+    <div class="d-flex row">
+    <div class="col-6">
+      <a class="card" href="/admin/persona">
+      <div class="card-body d-flex flex-column align-items-center justify-content-center">
 
+        <svg xmlns="http://www.w3.org/2000/svg" class="m-2 text-danger" width="24" height="24" viewBox="0 0 24 24"
+        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+        class="icon icon-tabler icons-tabler-outline icon-tabler-user">
+        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+        <path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0" />
+        <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
+        </svg>
+
+        <h1 class="text-center p-3">Ver tabla de usuarios</h1>
+      </div>
+      </a>
+    </div>
+
+    <div class="col-6">
+      <a class="card" href="/admin/persona-externa">
+      <div class="card-body d-flex flex-column align-items-center justify-content-center">
+
+        <svg xmlns="http://www.w3.org/2000/svg" class="m-2 text-primary" width="24" height="24" viewBox="0 0 24 24"
+        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+        class="icon icon-tabler icons-tabler-outline icon-tabler-question-mark">
+        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+        <path d="M8 8a3.5 3 0 0 1 3.5 -3h1a3.5 3 0 0 1 3.5 3a3 3 0 0 1 -2 3a3 4 0 0 0 -2 4" />
+        <path d="M12 19l0 .01" />
+        </svg>
+
+        <h1 class="text-center p-3">Ver tabla de personas externas</h1>
+      </div>
+      </a>
+    </div>
+    </div>
+  </div>
+
+  
   <div class="hr-text">Inscripcion a cursos</div>
 
   <div class="container my-5">
@@ -122,7 +161,7 @@
         <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
         </svg>
 
-        <h1 class="text-center p-3">Inscribir a un usuario del sistema a un curso</h1>
+        <h1 class="text-center p-3">Inscribir a un usuario a un curso</h1>
       </div>
       </a>
     </div>
@@ -146,11 +185,7 @@
     </div>
   </div>
 
-  <div class="d-flex justify-content-center mb-5">
-    <a href="/admin/persona" class="btn btn-primary mx-1">Ver usuarios</a>
-    <a href="/admin/persona-externa" class="btn btn-primary mx-1">Ver personas externas</a>
-    <a href="/admin/curso" class="btn btn-danger mx-1">Ver cursos</a>
-  </div>
+  
 
 
   <div class="hr-text">Inventario</div>
